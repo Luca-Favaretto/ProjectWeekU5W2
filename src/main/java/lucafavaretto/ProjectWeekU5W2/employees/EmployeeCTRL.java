@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -21,7 +22,7 @@ public class EmployeeCTRL {
     public Page<Employee> getAuthor(@RequestParam(defaultValue = "0") int pageNumber,
                                     @RequestParam(defaultValue = "10") int pageSize,
                                     @RequestParam(defaultValue = "name") String orderBy) {
-        return employeeSRV.getEmployees(pageNumber, pageSize, orderBy);
+        return employeeSRV.getAll(pageNumber, pageSize, orderBy);
     }
 
     @GetMapping("/{id}")
@@ -37,5 +38,26 @@ public class EmployeeCTRL {
         }
         return employeeSRV.save(newAuthor);
     }
+
+    @PutMapping("/{id}")
+    public Employee findByIdAndUpdate(@PathVariable UUID id, @RequestBody @Validated EmployeeDTO employeeDTO, BindingResult validation) {
+        if (validation.hasErrors()) {
+            throw new BadRequestException(validation.getAllErrors());
+        }
+        return employeeSRV.findByIdAndUpdate(id, employeeDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAuthorById(@PathVariable UUID id) {
+        employeeSRV.deleteById(id);
+    }
+
+    @PatchMapping("/{id}/upload")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String uploadAvatar(@PathVariable UUID id, @RequestParam("image") MultipartFile image) throws IOException {
+        return this.employeeSRV.uploadImage(id, image);
+    }
+
 
 }

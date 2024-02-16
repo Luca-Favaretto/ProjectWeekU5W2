@@ -1,6 +1,7 @@
 package lucafavaretto.ProjectWeekU5W2.devices;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class Device {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
+    @Setter(AccessLevel.NONE)
     private UUID id;
 
     @Enumerated(EnumType.STRING)
@@ -29,4 +31,6 @@ public class Device {
         this.deviceState = deviceState;
         this.deviceType = deviceType;
     }
+
+
 }
