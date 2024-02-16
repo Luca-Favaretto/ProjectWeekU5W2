@@ -1,16 +1,14 @@
 package lucafavaretto.ProjectWeekU5W2.devices;
 
 import lucafavaretto.ProjectWeekU5W2.employees.Employee;
-import lucafavaretto.ProjectWeekU5W2.employees.EmployeeDTO;
+import lucafavaretto.ProjectWeekU5W2.employees.EmployeeDAO;
+import lucafavaretto.ProjectWeekU5W2.employees.EmailDTO;
 import lucafavaretto.ProjectWeekU5W2.enums.DeviceState;
-import lucafavaretto.ProjectWeekU5W2.enums.DeviceType;
-import lucafavaretto.ProjectWeekU5W2.exceptions.BadRequestException;
 import lucafavaretto.ProjectWeekU5W2.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -19,6 +17,9 @@ import java.util.UUID;
 public class DeviceSRV {
     @Autowired
     DeviceDAO deviceDAO;
+
+    @Autowired
+    EmployeeDAO employeeDAO;
 
     public Page<Device> getAll(int pageNumber, int pageSize) {
         if (pageNumber > 20) pageSize = 20;
@@ -31,8 +32,8 @@ public class DeviceSRV {
     }
 
     public Device save(DeviceDTO deviceDTO) {
-        Device employee = new Device(deviceDTO.getDeviceStateEnum(), deviceDTO.getDeviceTypeEnum());
-        return deviceDAO.save(employee);
+        Device device = new Device(deviceDTO.getDeviceStateEnum(), deviceDTO.getDeviceTypeEnum());
+        return deviceDAO.save(device);
     }
 
     public Device findByIdAndUpdate(UUID id, DeviceDTO deviceDTO) {
@@ -46,4 +47,13 @@ public class DeviceSRV {
         Device found = findById(id);
         deviceDAO.delete(found);
     }
+
+    public Device setEmployee(UUID id, EmailDTO emailDTO) {
+        Employee employee = employeeDAO.findByEmail(emailDTO.email()).orElseThrow(() -> new NotFoundException(emailDTO.email()));
+        Device found = findById(id);
+        found.setEmployee(employee);
+        found.setDeviceState(DeviceState.ASSIGNED);
+        return deviceDAO.save(found);
+    }
+
 }

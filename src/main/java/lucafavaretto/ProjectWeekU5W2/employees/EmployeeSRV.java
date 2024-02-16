@@ -40,13 +40,18 @@ public class EmployeeSRV {
     }
 
     public Employee findByIdAndUpdate(UUID id, EmployeeDTO employeeDTO) {
-        Employee found = findById(id);
-        found.setName(employeeDTO.name());
-        found.setSurname(employeeDTO.surname());
-        found.setUsername(employeeDTO.username());
-        found.setEmail(employeeDTO.email());
+        if (employeeDAO.countByEmailAndIdNot(id, employeeDTO.email()) == 1) {
+            Employee found = findById(id);
+            found.setName(employeeDTO.name());
+            found.setSurname(employeeDTO.surname());
+            found.setUsername(employeeDTO.username());
+            found.setEmail(employeeDTO.email());
+            return employeeDAO.save(found);
+        } else {
+            throw new BadRequestException("email already exist");
+        }
 
-        return employeeDAO.save(found);
+
     }
 
     public void deleteById(UUID id) {

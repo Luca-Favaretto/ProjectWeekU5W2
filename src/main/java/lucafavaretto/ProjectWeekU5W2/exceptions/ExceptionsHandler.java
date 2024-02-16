@@ -32,6 +32,12 @@ public class ExceptionsHandler {
         return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorsPayload handleIllegalArg(IllegalArgumentException ex) {
+        return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorsPayload handleGenericErrors(Exception ex) {

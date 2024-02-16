@@ -58,6 +58,4 @@ public class EmployeeCTRL {
     public String uploadAvatar(@PathVariable UUID id, @RequestParam("image") MultipartFile image) throws IOException {
         return this.employeeSRV.uploadImage(id, image);
     }
-
-
 }
