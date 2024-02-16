@@ -58,7 +58,7 @@ public class DeviceCTRL {
 
     @PatchMapping("/{id}/setEmployee")
     @ResponseStatus(HttpStatus.CREATED)
-    public Device uploadAvatar(@PathVariable UUID id, @RequestBody @Validated EmailDTO emailDTO, BindingResult validation) {
+    public Device uploadAvatar(@PathVariable UUID id, @RequestBody @Validated EmailDTO emailDTO, BindingResult validation) throws IOException {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors());
         }

@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-
 public class ServerConfig {
+
     @Bean
     public Cloudinary cloudinaryUploader(@Value("${cloudinary.name}") String name,
                                          @Value("${cloudinary.key}") String key,
@@ -25,4 +25,5 @@ public class ServerConfig {
 
         return new Cloudinary(config);
     }
+
 }

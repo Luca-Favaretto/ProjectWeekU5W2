@@ -1,5 +1,6 @@
 package lucafavaretto.ProjectWeekU5W2.devices;
 
+import lucafavaretto.ProjectWeekU5W2.configuration.EmailSender;
 import lucafavaretto.ProjectWeekU5W2.employees.Employee;
 import lucafavaretto.ProjectWeekU5W2.employees.EmployeeDAO;
 import lucafavaretto.ProjectWeekU5W2.employees.EmailDTO;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @Service
@@ -20,6 +22,8 @@ public class DeviceSRV {
 
     @Autowired
     EmployeeDAO employeeDAO;
+    @Autowired
+    EmailSender emailSender;
 
     public Page<Device> getAll(int pageNumber, int pageSize) {
         if (pageNumber > 20) pageSize = 20;
@@ -48,11 +52,12 @@ public class DeviceSRV {
         deviceDAO.delete(found);
     }
 
-    public Device setEmployee(UUID id, EmailDTO emailDTO) {
+    public Device setEmployee(UUID id, EmailDTO emailDTO) throws IOException {
         Employee employee = employeeDAO.findByEmail(emailDTO.email()).orElseThrow(() -> new NotFoundException(emailDTO.email()));
         Device found = findById(id);
         found.setEmployee(employee);
         found.setDeviceState(DeviceState.ASSIGNED);
+        emailSender.sendRegistrationEmail(emailDTO.email());
         return deviceDAO.save(found);
     }
 
