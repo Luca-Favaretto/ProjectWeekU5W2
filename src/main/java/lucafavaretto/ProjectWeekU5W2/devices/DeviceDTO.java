@@ -13,4 +13,20 @@ public record DeviceDTO(
         @Size(min = 5, max = 10, message = "The length of DeviceType id between 5 and 10 char")
         String deviceType
 ) {
+    public DeviceState getDeviceStateEnum() {
+        try {
+            return DeviceState.valueOf(deviceState);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid DeviceState value: " + deviceState);
+        }
+    }
+
+    public DeviceType getDeviceTypeEnum() {
+        try {
+            return DeviceType.valueOf(deviceType);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid DeviceType value: " + deviceType);
+        }
+    }
+
 }

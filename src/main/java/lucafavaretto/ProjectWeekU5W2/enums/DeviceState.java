@@ -2,5 +2,5 @@ package lucafavaretto.ProjectWeekU5W2.enums;
 
 public enum DeviceState {
 
-    AVAILABLE, ASSIGNED, UNDER_MAINTENANCE, DISUSED
+    AVAILABLE, ASSIGNED, UNDER_MAINTENANCE, TABLET
 }

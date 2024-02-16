@@ -20,9 +20,9 @@ public class DeviceSRV {
     @Autowired
     DeviceDAO deviceDAO;
 
-    public Page<Device> getAll(int pageNumber, int pageSize, String orderBy) {
+    public Page<Device> getAll(int pageNumber, int pageSize) {
         if (pageNumber > 20) pageSize = 20;
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(orderBy));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return deviceDAO.findAll(pageable);
     }
 
@@ -31,17 +31,14 @@ public class DeviceSRV {
     }
 
     public Device save(DeviceDTO deviceDTO) {
-        Device employee = new Device(DeviceState.valueOf(deviceDTO.deviceState()), DeviceType.valueOf(deviceDTO.deviceType()));
+        Device employee = new Device(deviceDTO.getDeviceStateEnum(), deviceDTO.getDeviceTypeEnum());
         return deviceDAO.save(employee);
     }
 
     public Device findByIdAndUpdate(UUID id, DeviceDTO deviceDTO) {
         Device found = findById(id);
-        found.setName(deviceDTO.name());
-        found.setSurname(deviceDTO.surname());
-        found.setUsername(deviceDTO.username());
-        found.setEmail(deviceDTO.email());
-
+        found.setDeviceState(deviceDTO.getDeviceStateEnum());
+        found.setDeviceType(deviceDTO.getDeviceTypeEnum());
         return deviceDAO.save(found);
     }
 

@@ -1,13 +1,11 @@
 package lucafavaretto.ProjectWeekU5W2.employees;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lucafavaretto.ProjectWeekU5W2.devices.Device;
 
 import java.util.UUID;
 
@@ -15,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "employee")
 public class Employee {
     @Id
     @GeneratedValue
@@ -26,6 +25,9 @@ public class Employee {
     private String username;
     private String email;
     private String image;
+    @OneToOne
+    @JoinColumn(name = "device_id")
+    private Device device;
 
     public Employee(String name, String surname, String username, String email, String image) {
         this.name = name;
