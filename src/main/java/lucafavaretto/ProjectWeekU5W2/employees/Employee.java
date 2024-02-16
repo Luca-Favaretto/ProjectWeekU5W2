@@ -1,5 +1,6 @@
 package lucafavaretto.ProjectWeekU5W2.employees;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lucafavaretto.ProjectWeekU5W2.devices.Device;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,9 +27,11 @@ public class Employee {
     private String username;
     private String email;
     private String image;
-    @OneToOne
-    @JoinColumn(name = "device_id")
-    private Device device;
+
+    @JsonIgnore
+    
+    @OneToMany(mappedBy = "employee")
+    private List<Device> devices;
 
     public Employee(String name, String surname, String username, String email, String image) {
         this.name = name;

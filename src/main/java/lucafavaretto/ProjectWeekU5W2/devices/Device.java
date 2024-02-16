@@ -32,8 +32,8 @@ public class Device {
     @Column(name = "device_type")
     private DeviceType deviceType;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "device")
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
     private Employee employee;
 
     public Device(DeviceState deviceState, DeviceType deviceType) {
