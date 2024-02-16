@@ -5,6 +5,7 @@ import lucafavaretto.ProjectWeekU5W2.employees.Employee;
 import lucafavaretto.ProjectWeekU5W2.employees.EmployeeDAO;
 import lucafavaretto.ProjectWeekU5W2.employees.EmailDTO;
 import lucafavaretto.ProjectWeekU5W2.enums.DeviceState;
+import lucafavaretto.ProjectWeekU5W2.exceptions.BadRequestException;
 import lucafavaretto.ProjectWeekU5W2.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -55,6 +56,7 @@ public class DeviceSRV {
     public Device setEmployee(UUID id, EmailDTO emailDTO) throws IOException {
         Employee employee = employeeDAO.findByEmail(emailDTO.email()).orElseThrow(() -> new NotFoundException(emailDTO.email()));
         Device found = findById(id);
+        if (found.getDeviceState() != DeviceState.AVAILABLE) throw new BadRequestException("Device is not avaible");
         found.setEmployee(employee);
         found.setDeviceState(DeviceState.ASSIGNED);
         emailSender.sendRegistrationEmail(emailDTO.email());

@@ -17,7 +17,7 @@ public record DeviceDTO(
         try {
             return DeviceState.valueOf(deviceState);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid DeviceState value: " + deviceState + ". Correct value:AVAILABLE, ASSIGNED, UNDER_MAINTENANCE, TABLET");
+            throw new IllegalArgumentException("Invalid DeviceState value: " + deviceState + ". Correct value:AVAILABLE, ASSIGNED, UNDER_MAINTENANCE, DISMISSED");
         }
     }
 
