@@ -31,7 +31,8 @@ public class JWTFilter extends OncePerRequestFilter {
         // Cose da fare:
 
         // 1. Verifichiamo se la richiesta effettivamente contiene un Authorization Header, se non c'è --> 401
-        String authHeader = request.getHeader("Authorization"); // Bearer eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MDgzNDAxMDgsImV4cCI6MTcwODQyNjUwOCwic3ViIjoiYzk2NGI0MGMtYjM5Yi00ODc2LWEwZGItYzQwOGI3OWQ5YTQ1In0.Kt8bZ4KdseMY9ZcKRyOpr3KDZieeLY78uE4xt4pkho4qJMn2wKVlmEQ7oENW1ptN
+        String authHeader = request.getHeader("Authorization");
+        // Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDgzNTUzNTcsImV4cCI6MTcwODQ0MTc1Nywic3ViIjoiNTRmMmJkY2QtZTJlMS00N2ZiLWI3NjktYzNiYzhmYWI1ODYyIn0.RuKEwVZcna02apIzUNTZ2vFLQBvCSm679FWvgAOHavxmSCKK7Lk9mr6n3b80q1q8_zGqYv_FIl8Qr4twlsIu4w
         if (authHeader == null || !authHeader.startsWith("Bearer "))
             throw new UnauthorizedException("Per favore metti il token nell'header");
 
@@ -56,8 +57,11 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 4.3 Proseguo ora col prossimo elemento della catena
         filterChain.doFilter(request, response); // va al prossimo elemento della catena
+//        L'interfaccia FilterChain è spesso utilizzata all'interno di un filtro personalizzato per consentire la continuazione
+//        dell'esecuzione della catena dei filtri. Quando un filtro ha completato le sue operazioni, può chiamare il metodo doFilter su FilterChain,
+//        passando la richiesta e la risposta. Questo invoca il filtro successivo nella catena. Se non ci sono altri filtri nella catena,
+//        la richiesta raggiunge l'endpoint desiderato nell'applicazione.
 
-        
         // 5. Se non è OK --> 401
     }
 

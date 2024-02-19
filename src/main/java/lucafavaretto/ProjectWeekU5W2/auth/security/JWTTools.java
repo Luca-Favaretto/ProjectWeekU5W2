@@ -25,15 +25,22 @@ public class JWTTools {
 
     public void verifyToken(String token) { // Dato un token mi lancia eccezioni in caso di token manipolato o scaduto
         try {
-            Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).build().parse(token);
+            Jwts.parser()  // Crea un oggetto parser della libreria JWT
+                    .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))  // Configura la chiave segreta per la verifica della firma
+                    .build()  // Costruisce l'oggetto JwtParser
+                    .parse(token);  // Effettua il parsing del token JWT
         } catch (Exception ex) {
             throw new UnauthorizedException("Problemi col token! Effettua di nuovo il login!");
         }
     }
 
+
     public String extractIdFromToken(String token) {
-        return Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
-                .build().parseSignedClaims(token).getPayload()
-                .getSubject(); // Il subject è l'id dell'utente
+        return Jwts.parser()  // Crea un oggetto parser della libreria JWT
+                .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))  // Configura la chiave segreta per la verifica della firma
+                .build()  // Costruisce l'oggetto JwtParser
+                .parseSignedClaims(token)  // Effettua il parsing del token e restituisce le informazioni firmate
+                .getPayload()  // Ottiene la parte del payload del token
+                .getSubject();  // Ottiene il Subject dal payload (l'ID dell'utente)
     }
 }
