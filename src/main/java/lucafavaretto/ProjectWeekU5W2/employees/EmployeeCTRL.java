@@ -29,15 +29,7 @@ public class EmployeeCTRL {
     public Employee findById(@PathVariable UUID id) {
         return employeeSRV.findById(id);
     }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Employee saveAuthor(@RequestBody @Validated EmployeeDTO newAuthor, BindingResult validation) throws IOException {
-        if (validation.hasErrors()) {
-            throw new BadRequestException(validation.getAllErrors());
-        }
-        return employeeSRV.save(newAuthor);
-    }
+    
 
     @PutMapping("/{id}")
     public Employee findByIdAndUpdate(@PathVariable UUID id, @RequestBody @Validated EmployeeDTO employeeDTO, BindingResult validation) {

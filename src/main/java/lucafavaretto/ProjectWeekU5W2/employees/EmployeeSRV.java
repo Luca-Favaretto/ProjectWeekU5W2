@@ -35,7 +35,7 @@ public class EmployeeSRV {
     public Employee save(EmployeeDTO employeeDTO) {
         if (employeeDAO.existsByEmail(employeeDTO.email())) throw new BadRequestException("email already exist");
         Employee employee = new Employee(employeeDTO.name(), employeeDTO.surname(), employeeDTO.username(),
-                employeeDTO.email(), "https://ui-avatars.com/api/?name=" + employeeDTO.name() + "+" + employeeDTO.surname());
+                employeeDTO.email(), "https://ui-avatars.com/api/?name=" + employeeDTO.name() + "+" + employeeDTO.surname(), employeeDTO.password());
         return employeeDAO.save(employee);
     }
 
@@ -66,6 +66,10 @@ public class EmployeeSRV {
         found.setImage(url);
         employeeDAO.save(found);
         return url;
+    }
+
+    public Employee findByEmail(String email) {
+        return employeeDAO.findByEmail(email).orElseThrow(() -> new NotFoundException("Email " + email + " non trovata"));
     }
 
 }

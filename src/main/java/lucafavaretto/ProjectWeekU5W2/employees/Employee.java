@@ -27,17 +27,20 @@ public class Employee {
     private String username;
     private String email;
     private String image;
+    private String password;
 
     @JsonIgnore
-    
+
     @OneToMany(mappedBy = "employee")
     private List<Device> devices;
 
-    public Employee(String name, String surname, String username, String email, String image) {
+    public Employee(String name, String surname, String username, String email, String image, String password) {
         this.name = name;
         this.surname = surname;
         this.username = username;
         this.email = email;
         this.image = image;
+        this.password = password;
+
     }
 }
