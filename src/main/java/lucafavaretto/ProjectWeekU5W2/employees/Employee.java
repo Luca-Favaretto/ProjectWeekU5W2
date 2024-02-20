@@ -1,13 +1,18 @@
 package lucafavaretto.ProjectWeekU5W2.employees;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lucafavaretto.ProjectWeekU5W2.devices.Device;
+import lucafavaretto.ProjectWeekU5W2.enums.Role;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +21,8 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Table(name = "employee")
-public class Employee {
+@JsonIgnoreProperties({"password", "credentialsNonExpired", "accountNonExpired", "authorities", "username", "accountNonLocked", "enabled"})
+public class Employee implements UserDetails {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -28,6 +34,8 @@ public class Employee {
     private String email;
     private String image;
     private String password;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @JsonIgnore
 
@@ -41,6 +49,33 @@ public class Employee {
         this.email = email;
         this.image = image;
         this.password = password;
+        this.role = Role.USER;
 
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+    
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

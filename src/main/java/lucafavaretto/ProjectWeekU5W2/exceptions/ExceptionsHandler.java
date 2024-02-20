@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,6 +37,12 @@ public class ExceptionsHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorsPayload handleIllegalArg(IllegalArgumentException ex) {
         return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorsPayload handleAccessDenied(AccessDeniedException ex) {
+        return new ErrorsPayload("Not authorized for this endpoint", LocalDateTime.now());
     }
 
     @ExceptionHandler(Exception.class)

@@ -51,7 +51,7 @@ public class JWTFilter extends OncePerRequestFilter {
         Employee employee = employeeSRV.findById(UUID.fromString(id));
 
         // 4.2 Devo informare Spring Security che l'utente è autenticato (se non faccio questo step riceverò 403 come risposta)
-        Authentication authentication = new UsernamePasswordAuthenticationToken(employee, null);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(employee, null, employee.getAuthorities());
         // Ci servirà domani per l'AUTORIZZAZIONE
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
