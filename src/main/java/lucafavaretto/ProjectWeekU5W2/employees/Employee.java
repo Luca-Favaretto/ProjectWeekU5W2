@@ -10,6 +10,7 @@ import lombok.Setter;
 import lucafavaretto.ProjectWeekU5W2.devices.Device;
 import lucafavaretto.ProjectWeekU5W2.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -55,9 +56,10 @@ public class Employee implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        // Questo metodo deve ritornare la lista dei ruoli (SimpleGrantedAuthority) dell'utente
+        return List.of(new SimpleGrantedAuthority(this.role.name()));
     }
-    
+
 
     @Override
     public boolean isAccountNonExpired() {
